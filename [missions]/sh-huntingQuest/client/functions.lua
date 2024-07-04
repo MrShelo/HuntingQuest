@@ -16,6 +16,15 @@ function CreateNPC(model, coords, heading)
     table.insert(Config.SpawnedPeds, npc)
 end
 
+function CreateAnimalAI(model, coords, heading)
+    LoadRequestedModel(model)
+    local npc = CreatePed(0, model, coords, heading, false, false)
+    FreezeEntityPosition(npc, true)
+    SetEntityInvincible(npc, true)
+    SetBlockingOfNonTemporaryEvents(npc, true)
+    table.insert(Config.SpawnedPeds, npc)
+end
+
 
 function SpawnNetworkVehicle(model, coords)
     if model ~= nil then
@@ -31,6 +40,86 @@ function SpawnNetworkVehicle(model, coords)
                 SetEntityHeading(veh, coords.w)
             end
         end
+    end
+end
+
+function GetNewPoint()
+    print(Config.MissionData.missionStage)
+    if Config.MissionData.missionStage == 0 then
+        local tblLengh = #Config.MissionPlace['sttrail'].group
+        local selectedNumber = math.random(1, tblLengh)
+        
+        for idx, val in ipairs(Config.MissionPlace['sttrail'].group) do
+            if idx == selectedNumber then
+                Config.MissionData.missionCords = val
+                Config.MissionData.selectedMission = 'sttrail'
+                DeleteBlips()
+                CreateBlip(Config.MissionData.selectedMission)
+                break
+            end
+        end
+
+    elseif Config.MissionData.missionStage == 1 then
+        local tblLengh = #Config.MissionPlace['ndtrail'].group
+        local selectedNumber = math.random(0, tblLengh-1)
+
+        for idx, val in ipairs(Config.MissionPlace['ndtrail'].group) do
+            if idx == selectedNumber then
+                Config.MissionData.missionCords = val
+                Config.MissionData.selectedMission = 'ndtrail'
+                DeleteBlips()
+                CreateBlip(Config.MissionData.selectedMission)
+                break
+            end
+        end
+
+    elseif Config.MissionData.missionStage == 2 then
+        local tblLengh = #Config.MissionPlace['rdtrail'].group
+        local selectedNumber = math.random(0, tblLengh-1)
+
+        for idx, val in ipairs(Config.MissionPlace['rdtrail'].group) do
+            if idx == selectedNumber then
+                Config.MissionData.missionCords = val
+                Config.MissionData.selectedMission = 'rdtrail'
+                DeleteBlips()
+                CreateBlip(Config.MissionData.selectedMission)
+                break
+            end
+        end
+    
+    elseif Config.MissionData.missionStage == 3 then
+        local tblLengh = #Config.MissionPlace['appear'].group
+        local selectedNumber = math.random(0, tblLengh-1)
+
+        for idx, val in ipairs(Config.MissionPlace['appear'].group) do
+            if idx == selectedNumber then
+                Config.MissionData.missionCords = val
+                Config.MissionData.selectedMission = 'appear'
+                DeleteBlips()
+                CreateBlip(Config.MissionData.selectedMission)
+                break
+            end
+        end
+
+    end
+end
+
+function CreateBlip(key)
+        Config.MissionPlace[key].blip = AddBlipForCoord(Config.MissionData.missionCords.x, Config.MissionData.missionCords.y, Config.MissionData.missionCords.z)
+        SetBlipSprite(Config.MissionPlace[key].blip, 66)
+        SetBlipDisplay(Config.MissionPlace[key].blip, 4)
+        SetBlipScale(Config.MissionPlace[key].blip, 0.7)
+        SetBlipAsShortRange(Config.MissionPlace[key].blip, true)
+        SetBlipColour(Config.MissionPlace[key].blip, 6)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentSubstringPlayerName(Config.Translations[Config.Lang].trailBlip)
+        EndTextCommandSetBlipName(Config.MissionPlace[key].blip)
+        SetBlipRoute(Config.MissionPlace[key].blip, true)
+end
+
+function DeleteBlips()
+    for k, v in pairs(Config.MissionPlace) do
+        RemoveBlip(Config.MissionPlace[k].blip)
     end
 end
 
