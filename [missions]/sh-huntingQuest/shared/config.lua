@@ -1,5 +1,7 @@
 Config = {}
 
+
+
 Config.SpawnedPeds = {} -- Miejsce zapisu zrespionych npc
 Config.MissionData = { -- Dane aktualnej misji, progresu przetrzymywane dla gracza
     missionStage = -1,
@@ -7,24 +9,31 @@ Config.MissionData = { -- Dane aktualnej misji, progresu przetrzymywane dla grac
     missionCords = nil,
     selectedMission = nil,
 } 
-
+Config.debug = false -- debug prints server
 Config.Lang = 'pl' -- Wybór tłumaczeń w przypadku możliwości wyboru języka
 
 Config.Translations = { -- Tablica z tłumaczeniami
- ['pl'] = {
-    npcText = '[E] - Odbierz zlecenie na polowanie',
-    npcOnHunt = 'Udaj się na polowanie',
-    npcAfterHunt = '[E] - Odbierz zapłatę',
-    OnJob = 'Wsiądź do pojazdu i jedź w wyznaczone na mapie miejsce',
-    deertext = 'Znajdujesz jelenia.',
-    boartext = 'Znajdujesz dzika.',
-    checkTrail = '[E] - Sprawdź trop',
-    waterText = 'Coś korzystało z tego wodopoju',
-    poopText = 'Coś zostawiło tu odchody',
-    trailText = 'Coś tędy szło',
-    trailBlip = '# Tropy zwierzęcia',
-
- }
+    ['pl'] = {
+        npcText = '[E] - Odbierz zlecenie na polowanie',
+        npcOnHunt = 'Udaj się na polowanie',
+        npcAfterHunt = '[E] - Odbierz zapłatę',
+        OnJob = 'Wsiądź do pojazdu i jedź w wyznaczone na mapie miejsce',
+        deertext = 'Znajdujesz jelenia.',
+        boartext = 'Znajdujesz dzika.',
+        checkTrail = '[E] - Sprawdź trop',
+        waterText = 'Coś korzystało z tego wodopoju',
+        poopText = 'Coś zostawiło tu odchody',
+        trailText = 'Coś tędy szło',
+        trailBlip = '# Tropy zwierzęcia',
+        huntText = 'Polowanie',
+        huntleaveText = 'Zwierzyna uciekła',
+        diedAnimalText = 'Martwa zwierzyna',
+        trailGo = 'Podążaj tropem',
+        toskintext = '[E] - Skórowanie',
+        returnSkin = 'Przyjedź ze skórą do myśliwego',
+        huntingBlip = 'Leśniczy - Polowanie',
+        rewardText = 'Może kiedyś dam ci pieniądze..',
+    }
 }
 
 
@@ -85,7 +94,8 @@ Config.MissionPlace = { -- Podstawowe miejsca oraz punkty od huntingu
         GetMissionText = Config.Translations[Config.Lang].npcText,
         OnMissionText = Config.Translations[Config.Lang].npcOnHunt,
         AfterMissionText = Config.Translations[Config.Lang].npcAfterHunt,
-        InteractDistanceNPC = 3 -- Dystans aby móc wejść w interakcje z NPC
+        InteractDistanceNPC = 3, -- Dystans aby móc wejść w interakcje z NPC
+        customblip = nil
     },
     ['sttrail'] = {
         group = {  -- Miejsca pierwszej poszlaki
@@ -122,7 +132,8 @@ Config.MissionPlace = { -- Podstawowe miejsca oraz punkty od huntingu
         group ={ -- Miejsca pojawienia się zwierzęcia
             vector4(-1476.5741, 4427.6836, 23.8292, 210.7935),
             vector4(-1489.7793, 4410.1743, 22.2467, 337.4818),
-            vector4(-1486.0995, 4430.2876, 21.4767, 327.1075)
+            vector4(-1486.0995, 4430.2876, 21.4767, 327.1075),
+            vector4(-1485.3995, 4431.7876, 21.4827, 327.1075)
         },
         blip = nil,
     }

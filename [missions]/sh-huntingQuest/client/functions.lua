@@ -44,9 +44,10 @@ function SpawnNetworkVehicle(model, coords)
 end
 
 function GetNewPoint()
-    print(Config.MissionData.missionStage)
+    
     if Config.MissionData.missionStage == 0 then
-        local tblLengh = #Config.MissionPlace['sttrail'].group
+        DrawNotify(Config.Translations[Config.Lang].npcOnHunt)
+        local tblLengh = tablelength(Config.MissionPlace['sttrail'].group)
         local selectedNumber = math.random(1, tblLengh)
         
         for idx, val in ipairs(Config.MissionPlace['sttrail'].group) do
@@ -60,7 +61,8 @@ function GetNewPoint()
         end
 
     elseif Config.MissionData.missionStage == 1 then
-        local tblLengh = #Config.MissionPlace['ndtrail'].group
+        DrawNotify(Config.Translations[Config.Lang].trailGo)
+        local tblLengh = tablelength(Config.MissionPlace['ndtrail'].group)
         local selectedNumber = math.random(0, tblLengh-1)
 
         for idx, val in ipairs(Config.MissionPlace['ndtrail'].group) do
@@ -74,7 +76,8 @@ function GetNewPoint()
         end
 
     elseif Config.MissionData.missionStage == 2 then
-        local tblLengh = #Config.MissionPlace['rdtrail'].group
+        DrawNotify(Config.Translations[Config.Lang].trailGo)
+        local tblLengh = tablelength(Config.MissionPlace['rdtrail'].group)
         local selectedNumber = math.random(0, tblLengh-1)
 
         for idx, val in ipairs(Config.MissionPlace['rdtrail'].group) do
@@ -88,7 +91,8 @@ function GetNewPoint()
         end
     
     elseif Config.MissionData.missionStage == 3 then
-        local tblLengh = #Config.MissionPlace['appear'].group
+        DrawNotify(Config.Translations[Config.Lang].trailGo)
+        local tblLengh = tablelength(Config.MissionPlace['appear'].group)
         local selectedNumber = math.random(0, tblLengh-1)
 
         for idx, val in ipairs(Config.MissionPlace['appear'].group) do
@@ -100,10 +104,26 @@ function GetNewPoint()
                 break
             end
         end
-
+    elseif Config.MissionData.missionStage == 4 then
+        DrawNotify(Config.Translations[Config.Lang].returnSkin)
+        Config.MissionData.selectedMission = 'npc'
+        Config.MissionData.missionCords = nil
+        DeleteBlips()
     end
 end
 
+function CreateBlipHunting()
+    Config.MissionPlace['npc'].customblip = AddBlipForCoord(Config.MissionData.missionCords.x, Config.MissionData.missionCords.y, Config.MissionData.missionCords.z)
+    SetBlipSprite(Config.MissionPlace['npc'].customblip, 119)
+    SetBlipDisplay(Config.MissionPlace['npc'].customblip, 4)
+    SetBlipScale(Config.MissionPlace['npc'].customblip, 0.9)
+    SetBlipAsShortRange(Config.MissionPlace['npc'].customblip, true)
+    SetBlipColour(Config.MissionPlace['npc'].customblip, 28)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentSubstringPlayerName(Config.Translations[Config.Lang].huntingBlip)
+    EndTextCommandSetBlipName(Config.MissionPlace['npc'].customblip)
+    SetBlipRoute(Config.MissionPlace['npc'].customblip, true)
+end
 function CreateBlip(key)
         Config.MissionPlace[key].blip = AddBlipForCoord(Config.MissionData.missionCords.x, Config.MissionData.missionCords.y, Config.MissionData.missionCords.z)
         SetBlipSprite(Config.MissionPlace[key].blip, 66)
@@ -145,3 +165,17 @@ function Draw3DText(x, y, z, scl_factor, text)
         DrawText(_x, _y)
     end
 end
+
+
+function DrawNotify(text)
+    TriggerEvent('chat:addMessage', {
+        color = { 255, 0, 0},
+        multiline = true,
+        args = {Config.Translations[Config.Lang].huntText, text}
+      })
+end
+function tablelength(T)
+   local count = 0
+   for _ in pairs(T) do count = count + 1 end
+   return count
+ end
